@@ -62,24 +62,31 @@
 
 
               <?php
+              $id = $_GET['id'];
+              $sql = "SELECT * FROM students2 WHERE id = $id;";
+              $rowdata = $db->query($sql);
+              $data = $rowdata->fetch_object();
+
+
+              
 
                 if (
-                      isset($_POST['submit']) &&
+                      isset($_POST['update']) &&
                       !empty($_POST['name']) &&
                       !empty($_POST['dob']) &&
                       !empty($_POST['location']))
                 {
                   extract($_POST);
-                  $sql = "INSERT INTO students2 VALUE(NULL,'$name', '$dob', '$location');";
+                  $sql = "UPDATE `students2` SET `name`='$name',`date_of_birth`='$dob',`location`='$location' WHERE id = $id;";
 
                   
                   $db->query($sql);
                   if($db->affected_rows){
-                    echo "<div class='alert alert-success'>Successfully Inserted</div>";
+                    echo "<div class='alert alert-success'>Successfully update</div>";
                   }else{
-                    echo "<div class='alert alert-danger'>Not Inserted</div>";
+                    echo "<div class='alert alert-danger'>Not update</div>";
                   }
-                }elseif(isset($_POST['submit'])){
+                }elseif(isset($_POST['update'])){
                   echo "<div class='alert alert-danger'>Do not Put Any Empty</div>";
                 }
               
@@ -91,20 +98,20 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>
-                    <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name"?>
+                    <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" VALUE = <?php echo $data->name; ?>>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Date of birth</label>
-                    <input type="date" name="dob" class="form-control" id="exampleInputPassword1">
+                    <input type="date" name="dob" class="form-control" id="exampleInputPassword1" VALUE = <?php echo $data->date_of_birth; ?>>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Location</label>
-                    <input type="text" name="location" class="form-control" placeholder="Enter Your Location" id="exampleInputPassword1">
+                    <input type="text" name="location" class="form-control" placeholder="Enter Your Location" id="exampleInputPassword1" VALUE = <?php echo $data->location; ?>>
                   </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" name="update" class="btn btn-primary">Update</button>
                 </div>
               </form>
 
